@@ -29,8 +29,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          # Force add in case they are new/ignored
-          git add .gemini/GEMINI.md CLAUDE.md OPENCODE_RULES.md .codex/config.md .theia/ai-context.md .github/copilot-instructions.md
-          # Remove old cursorrules if it exists in git index
+          # Sync targets
+          git add .gemini/GEMINI.md CLAUDE.md AGENTS.md .codex/config.toml .prompts/instructions.md .github/copilot-instructions.md
+          # Cleanup removed agents
           git rm --cached .cursorrules || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: Auto-sync agent constitutions [skip ci]" && git push)
