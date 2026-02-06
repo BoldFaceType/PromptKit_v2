@@ -23,7 +23,7 @@
 
 ## 4. The Deployment (Integration)
 * [x] **Sync Script (`sync_agents.py`):** **UPDATED.** Now performs **Content Injection** (Transclusion).
-* [ ] **Local Execution:** Run `python scripts/sync_agents.py`.
+* [x] **Local Execution:** Run `python scripts/sync_agents.py`.
 
 ## 5. "Rule of One" Cuts
 * [REJECTED] **Beads / Deductive Engines:** Passive Markdown links used instead. (KISS).
@@ -31,7 +31,5 @@
 * [REJECTED] **Automated "Watchers":** Replaced by "Semantic Triggers" in Constitution.
 
 ## Next Actions
-1. **Install:** `pip install -e .[dev]`
-2. **Sync:** `python scripts/sync_agents.py` (Injects Constitution)
-3. **Verify:** Check `GEMINI.md` content.
-4. **Push:** `git push origin main`
+1. **Verify:** Check `AGENTS.md` (Root) content.
+2. **Push:** `git push origin main`

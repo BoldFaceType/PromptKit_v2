@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.4] - 2026-02-05
+
+### Session Shutdown
+* **Memory Update:** Initialized `CHILL_LOOP_CANVAS.md` via Session Shutdown Protocol.
+* **Agent Finalization:** Finalized roster (OpenCode, Codex, Theia, CoPilot) and verified deployment mechanics.
+
 ## [2.0.3] - 2026-02-05
 
 ### Automation
