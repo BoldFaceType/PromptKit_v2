@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "promptkit-core"
+version = "2.0.2"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+  "mypy",
+  "radon",
+  "xenon",
+  "snakeviz",
+  "pytest",
+  "pytest-benchmark"
+]
+
+# --- Pytest & Benchmark ---
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--benchmark-columns=min,mean,stddev --benchmark-sort=mean"
+testpaths = ["benchmarks"]
+python_files = "test_*.py"
+
+# --- Tripwire: Complexity (Radon) ---
+[tool.radon]
+exclude = "tests/*,venv/*,dist/*"
+cc_min = "C"
+show_complexity = true
+
+# --- Linting (Ruff) ---
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+select = ["E", "F", "B", "SIM", "UP", "N"]
+# N = PEP8 Naming, SIM = Simplify
+ignore = []
+
+# --- Type Safety (MyPy) ---
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
