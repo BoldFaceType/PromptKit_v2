@@ -15,9 +15,13 @@ import shutil
 # Configuration
 SOURCE = "promptkit/AGENTS.md"
 TARGETS = [
-    ".gemini/GEMINI.md",  # Gemini CLI
-    "CLAUDE.md",          # Claude Projects/Desktop
-    ".cursorrules"        # Cursor Editor
+    ".gemini/GEMINI.md",             # Gemini CLI
+    "CLAUDE.md",                     # Claude Projects/Desktop
+    # ".cursorrules",                # REMOVED: Cursor
+    "OPENCODE_RULES.md",             # OpenCode (Verify Path)
+    ".codex/config.md",              # Codex CLI (Verify Path)
+    ".theia/ai-context.md",          # Theia AI (Verify Path)
+    ".github/copilot-instructions.md" # GitHub CoPilot CLI
 ]
 
 HEADER = """<!--
