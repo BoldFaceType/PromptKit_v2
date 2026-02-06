@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.3] - 2026-02-05
+
+### Automation
+* **GitHub Action:** Added `sync_constitution.yml` to enable **Remote Governance**. The repo is now the SSoT; pushes to `main` auto-update agent config files.
+
+### Documentation
+* **FAQ & How-To:** Integrated core system documentation into `README.md` for better developer onboarding.
+
 ## [2.0.2] - 2026-02-05
 
 ### Governance
