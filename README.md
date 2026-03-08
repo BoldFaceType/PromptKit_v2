@@ -55,6 +55,17 @@ It represents a **Toolkit** for managing **Prompts**. It provides the infrastruc
 ### How does it work?
 The system utilizes "Enforcer" tools in the `Makefile` to reject complex code and regressive performance. It then uses the `sync_agents.py` script to **inject** the rules directly into the context window of your AI tools (Gemini, Claude, Cursor), ensuring they cannot hallucinate slow or complex patterns.
 
+### How do we coordinate parallel agents safely?
+Use a Git-backed board protocol.
+
+* **Board:** `AGENT_BOARD.jsonl` (append-only events)
+* **Manifest:** `manifest_slices.md` (human-readable snapshot)
+* **Protocol:** Claim -> Start -> Heartbeat -> Handoff -> Merge -> Release
+* **Timing:** 15m lease, 5m heartbeat, 10m stale timeout
+* **Tripwires:** board validator + syntax + formatting checks must pass before merge
+
+Reference: `promptkit/skills/governance/SKILL_GitBoard.md`
+
 ### How is versioning handled?
 Versioning is managed via standard Git workflows and the **Session Shutdown Protocol**. Every change to the Constitution is benchmarked against "Tripwires" before it is considered RepoReady.
 
