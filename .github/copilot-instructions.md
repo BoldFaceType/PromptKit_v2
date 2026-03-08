@@ -48,6 +48,7 @@ graph TD
 ## 5. Reference Links (Lazy Load)
 * **Active Project:** [Chill Loop Canvas](...)
 * **Profiling Tool:** [Profiling Manual](promptkit/skills/performance/SKILL_Profiling.md)
+* **Git Board Governance:** [Git-backed Board Manual](promptkit/skills/governance/SKILL_GitBoard.md)
 
 ## 6. Session Shutdown Protocol (Mandatory)
 **TRIGGER:** User says "Done", "Wrap up", "Finish", or "Deploy".
@@ -55,3 +56,34 @@ graph TD
 1. **Memory Update:** Append a concise summary of *decisions made* and *technical debt added* to the **Active Project** file (Link above).
 2. **Changelog Update:** If code was shipped, add a bullet point to CHANGELOG.md.
 3. **Git Commit:** Generate a conventional commit message.
+
+## 7. Multi-Agent Git Board Protocol (Mandatory)
+**TRIGGER:** More than one agent is active, or work is split across branches/worktrees.
+
+**BOARD MODEL:** Git-backed append-only event stream (`AGENT_BOARD.jsonl`) plus status manifest (`manifest_slices.md`).
+
+### Required Event Lifecycle
+1. **Claim Lease:** Append `claim` before coding starts.
+2. **Start:** Append `start` when coding begins.
+3. **Heartbeat:** Append `heartbeat` every 5 minutes while active.
+4. **Block:** Append `block` immediately when blocked.
+5. **Handoff:** Append `handoff` with commit/PR when ready.
+6. **Merge:** Integrator appends `merge` after PR lands.
+7. **Release:** Append `release` when ownership ends.
+
+### Timing Defaults (Enforced)
+* **Lease Duration:** 15 minutes.
+* **Heartbeat Interval:** 5 minutes.
+* **Stale Timeout:** 10 minutes without heartbeat.
+
+### Conflict Rules
+* One active owner per slice/task.
+* Earliest active lease wins.
+* Stale/expired lease may be replaced only via `takeover` event.
+* Work without an active lease is invalid.
+
+### CI/CD Tripwire Rule
+Before merge to integration branch, all board and code quality checks must pass:
+1. Board event validation (schema + lease/flow checks)
+2. Syntax checks
+3. Formatting checks
