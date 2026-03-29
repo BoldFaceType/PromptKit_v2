@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.5] - 2026-03-28
+
+### Skills
+* **DevOps Guide:** Added `SKILL_DevOps_Guide.md` (AI Development Tools Installation Guide for Windows 11, following DevOps Guide v2.0.2).
+* **Reference Link:** Added lazy-load link in `AGENTS.md` Section 5.
+
+### Sync
+* **Global Claude Config:** Updated `sync_agents.py` to inject constitution into `~/.claude/CLAUDE.md` (Claude Code global context).
+
 ## [2.0.4] - 2026-02-05
 
 ### Session Shutdown

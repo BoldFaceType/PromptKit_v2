@@ -49,6 +49,7 @@ graph TD
 * **Active Project:** [Chill Loop Canvas](...)
 * **Profiling Tool:** [Profiling Manual](promptkit/skills/performance/SKILL_Profiling.md)
 * **Git Board Governance:** [Git-backed Board Manual](promptkit/skills/governance/SKILL_GitBoard.md)
+* **DevOps Guide:** [DevOps Setup Guide v2.0.2](promptkit/skills/devops/SKILL_DevOps_Guide.md)
 
 ## 6. Session Shutdown Protocol (Mandatory)
 **TRIGGER:** User says "Done", "Wrap up", "Finish", or "Deploy".

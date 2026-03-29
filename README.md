@@ -1,4 +1,4 @@
-# PromptKit v2.0.2 (Data-Oriented Edition)
+# PromptKit v2.0.5 (Data-Oriented Edition)
 
 **Role:** Clinical AI Engineering Core
 **Philosophy:** Rule of One | KISS | VCR

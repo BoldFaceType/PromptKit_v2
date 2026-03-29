@@ -1,4 +1,4 @@
-# PromptKit v2.0.2 Status Manifest
+# PromptKit v2.0.5 Status Manifest
 
 **Date:** 2026-02-05
 **Pivot:** Vercel (Context-First Governance)
