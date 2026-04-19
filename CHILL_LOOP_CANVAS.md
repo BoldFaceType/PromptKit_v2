@@ -8,6 +8,7 @@
 2.  **SSoT Strategy:** Implemented "Remote Governance" via GitHub Actions. The repo is now the master source; `git pull` updates the local "brains."
 3.  **Agent Roster:** Swapped **Cursor** for **OpenCode**, **Codex CLI**, **Theia AI**, and **GitHub Copilot CLI** based on verified configuration paths.
 4.  **Sync Mechanism:** Verified that the local `sync_agents.py` correctly scaffolds directories and injects rules.
+5.  **Reference Memory:** DevOps Guide v2.0.2 location saved as `C:\Dev\notes\DevOps Guide v2.0.2.md`.
 
 ### Technical Debt Added
 1.  **Binary Bloat:** Committing auto-generated agent config files (`CLAUDE.md`, etc.) to the repository. This is intentional for SSoT but may cause minor noise in Git diffs.
