@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.6] - 2026-05-04
+
+### Governance
+* **Dirty Worktree SOP:** Added mandatory preflight, unattended-agent isolation, merge gate, and recovery rules to `AGENTS.md`.
+
 ## [2.0.5] - 2026-03-28
 
 ### Skills

@@ -88,3 +88,25 @@ Before merge to integration branch, all board and code quality checks must pass:
 1. Board event validation (schema + lease/flow checks)
 2. Syntax checks
 3. Formatting checks
+
+## 8. Dirty Worktree & CI/CD SOP (Mandatory)
+**TRIGGER:** Before running unattended agents, splitting work across branches/worktrees, or opening a merge request.
+
+### Preflight Rule
+Run `git status --short` before starting. If the output is non-empty, stop and classify the changes:
+1. **Owned WIP:** commit to a temporary branch with `git add -A` and `git commit -m "WIP before agent work"`.
+2. **User/unknown WIP:** do not overwrite, revert, or reformat it. Create a separate worktree or ask for ownership.
+3. **Generated noise:** remove only when the generating command is known and the files are safe to recreate.
+
+### Unattended Agent Rule
+Unattended agents may run only from a clean branch or isolated worktree. The prompt must name one narrow task, expected test command, and allowed file scope.
+
+### Merge Gate
+Before merge, provide:
+1. `git status --short` showing only intentional changes.
+2. The exact tests/checks run.
+3. Changed files and remaining risks.
+4. A conventional commit or PR title.
+
+### Recovery Rule
+If an agent creates broad or unclear diffs, preserve the branch and stop. Do not stack cleanup commits on top of unknown changes; inspect with `git diff --stat` and recover by cherry-picking only verified files into a clean branch.

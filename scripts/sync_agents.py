@@ -11,6 +11,11 @@ Why Injection?
 """
 import os
 import shutil
+import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
 
 # Configuration
 SOURCE = "promptkit/AGENTS.md"
