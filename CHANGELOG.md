@@ -5,6 +5,16 @@
 ### Governance
 * **Dirty Worktree SOP:** Added mandatory preflight, unattended-agent isolation, merge gate, and recovery rules to `AGENTS.md`.
 
+## [Unreleased] - 2026-06-13
+
+### Governance
+* **Compact Constitution:** Compressed `promptkit/AGENTS.md` around KISS, Rule of One, VCR, VSA, Q2 priorities, RepoReady, and current tool targets.
+* **RepoReady:** Added Task Manifests and removed the broad `documented` requirement.
+* **Tool Focus:** Removed Gemini CLI and OpenWebUI from the Optimize For list.
+
+### Sync
+* **Generated Agent Files:** Synced generated agent targets from `promptkit/AGENTS.md`.
+
 ## [2.0.5] - 2026-03-28
 
 ### Skills

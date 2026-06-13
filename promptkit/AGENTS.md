@@ -1,106 +1,28 @@
-# AGENTS.md (The Constitution)
+# AGENTS.md Compact Constitution
 
-## 1. Identity & Prime Directive
-* **Role:** Clinical AI Engineer & Systems Architect.
-* **System:** "Chill-Loop" (Local-First, Data-Oriented).
-* **Core Philosophy:** Rule of One (Solve one problem), KISS (No custom code), VCR (Value > Complexity).
+## 1. Doctrine
+KISS, Rule of One, VCR, and smallest viable slices. Ship deterministic, reusable, continuous work. Reject scope creep, extra tools/frameworks, over-engineering, context bloat, token-maxxing, and AI hype. New tools need replacement-level justification. Compress complexity, challenge assumptions, limit WIP. Health, sleep, CPAP, finances, and family are first-class dependencies.
 
-## 2. The Decision Matrix (Logic Gate)
-<!-- Visual anchor to force Tier selection immediately. -->
-```mermaid
-graph TD
-  Start([Task]) --> IsHot{Loop > 1k?}
-  IsHot -- YES --> Tier1[<b>TIER 1: Hot Path</b><br/>Dict[Arrays], No Objects]
-  IsHot -- NO --> IsComplex{Complexity > 10?}
-  IsComplex -- YES --> Tier2[<b>TIER 2: Risk</b><br/>Must Profile & Lint]
-  IsComplex -- NO --> Tier3[<b>TIER 3: Std</b><br/>Standard OOP]
-  style Tier1 fill:#fcc,stroke:#c00
-```
+## 2. 2026Q2 Priorities
+Stabilize finances, improve sleep, pass AI-103 by 2026-06-30, finish P520/3090, PAOS/Obsidian-Claude PKB, and Chill/Hybrid-Loop v2. Treat as one system for behavior change, local-first AI ops, and Applied/Clinical AI Engineering.
 
-## 3. The Compressed Technical Index (The Laws)
-<!-- "Context-First" knowledge. Do not ignore. -->
+## 3. RepoReady
+Repos are reproducible, versioned, dated, agent-compatible, and handoff-ready: README, CHANGELOG, PRD, TDD, ADRs, Task Manifests, install/run docs, VSA boundaries, branch rules, ASCII/ASIC flow diagrams.
 
-### A. The "Negative Space" Law (Tier 1 Rule)
-**IF** executing a Hot Path (Tier 1), you are **FORBIDDEN** from using:
-1. class or `__init__` (Memory allocation is too slow).
-2. try/except (Branch prediction failure).
-3. logging or I/O (Blocks the thread).
+## 4. Optimize For
+Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, local inference, automation, APIs/CLIs, reusable infra, verification loops, learn-by-doing, long tasks, cron, AI-103 blocks.
 
-**REQUIRED Pattern (Structure of Arrays):**
-* **Bad (OOP):** `[Point(x, y) for x, y in data]`
-* **Good (SoA):** `{'x': array('f', [...]), 'y': array('f', [...])}`
+## 5. Reference Links
+* Active Project: [Chill Loop Canvas](...)
+* Profiling: [Manual](promptkit/skills/performance/SKILL_Profiling.md)
+* Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
+* DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
 
-### B. The Complexity Tripwire (Tier 2 Rule)
-* **Constraint:** Any logic flagging Cyclomatic Complexity > 10 is rejected.
-* **Action:** You must refactor into smaller, pure functions or use the profiler.
+## 6. Shutdown
+Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
 
-## 4. Operational Context (Current State)
-* **Sprint:** Python Core Fundamentals.
-* **Hardware:** i9-13900HX (Optimize for L2 Cache), RTX 4090.
-* **Forbidden:** Dependencies not in pyproject.toml.
+## 7. Multi-Agent Board
+For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest_slices.md`. Lifecycle: claim, start, heartbeat, block, handoff, merge, release. Defaults: 15m lease, 5m heartbeat, stale after 10m. One owner per slice; earliest lease wins; stale leases need `takeover`; no lease means invalid work. Before merge, pass board validation, syntax, and formatting.
 
-## 5. Reference Links (Lazy Load)
-* **Active Project:** [Chill Loop Canvas](...)
-* **Profiling Tool:** [Profiling Manual](promptkit/skills/performance/SKILL_Profiling.md)
-* **Git Board Governance:** [Git-backed Board Manual](promptkit/skills/governance/SKILL_GitBoard.md)
-* **DevOps Guide:** [DevOps Setup Guide v2.0.2](promptkit/skills/devops/SKILL_DevOps_Guide.md)
-
-## 6. Session Shutdown Protocol (Mandatory)
-**TRIGGER:** User says "Done", "Wrap up", "Finish", or "Deploy".
-**ACTION:** You MUST perform the following **Documentation Updates** before exiting:
-1. **Memory Update:** Append a concise summary of *decisions made* and *technical debt added* to the **Active Project** file (Link above).
-2. **Changelog Update:** If code was shipped, add a bullet point to CHANGELOG.md.
-3. **Git Commit:** Generate a conventional commit message.
-
-## 7. Multi-Agent Git Board Protocol (Mandatory)
-**TRIGGER:** More than one agent is active, or work is split across branches/worktrees.
-
-**BOARD MODEL:** Git-backed append-only event stream (`AGENT_BOARD.jsonl`) plus status manifest (`manifest_slices.md`).
-
-### Required Event Lifecycle
-1. **Claim Lease:** Append `claim` before coding starts.
-2. **Start:** Append `start` when coding begins.
-3. **Heartbeat:** Append `heartbeat` every 5 minutes while active.
-4. **Block:** Append `block` immediately when blocked.
-5. **Handoff:** Append `handoff` with commit/PR when ready.
-6. **Merge:** Integrator appends `merge` after PR lands.
-7. **Release:** Append `release` when ownership ends.
-
-### Timing Defaults (Enforced)
-* **Lease Duration:** 15 minutes.
-* **Heartbeat Interval:** 5 minutes.
-* **Stale Timeout:** 10 minutes without heartbeat.
-
-### Conflict Rules
-* One active owner per slice/task.
-* Earliest active lease wins.
-* Stale/expired lease may be replaced only via `takeover` event.
-* Work without an active lease is invalid.
-
-### CI/CD Tripwire Rule
-Before merge to integration branch, all board and code quality checks must pass:
-1. Board event validation (schema + lease/flow checks)
-2. Syntax checks
-3. Formatting checks
-
-## 8. Dirty Worktree & CI/CD SOP (Mandatory)
-**TRIGGER:** Before running unattended agents, splitting work across branches/worktrees, or opening a merge request.
-
-### Preflight Rule
-Run `git status --short` before starting. If the output is non-empty, stop and classify the changes:
-1. **Owned WIP:** commit to a temporary branch with `git add -A` and `git commit -m "WIP before agent work"`.
-2. **User/unknown WIP:** do not overwrite, revert, or reformat it. Create a separate worktree or ask for ownership.
-3. **Generated noise:** remove only when the generating command is known and the files are safe to recreate.
-
-### Unattended Agent Rule
-Unattended agents may run only from a clean branch or isolated worktree. The prompt must name one narrow task, expected test command, and allowed file scope.
-
-### Merge Gate
-Before merge, provide:
-1. `git status --short` showing only intentional changes.
-2. The exact tests/checks run.
-3. Changed files and remaining risks.
-4. A conventional commit or PR title.
-
-### Recovery Rule
-If an agent creates broad or unclear diffs, preserve the branch and stop. Do not stack cleanup commits on top of unknown changes; inspect with `git diff --stat` and recover by cherry-picking only verified files into a clean branch.
+## 8. Dirty Worktree SOP
+Before unattended agents, branches/worktrees, or merge requests, run `git status --short`. If dirty: commit owned WIP to a temp branch, isolate user/unknown WIP, and remove generated noise only when safely reproducible. Unattended agents require a clean branch/worktree, one narrow task, expected test, and allowed file scope. Merge gate: status, checks run, changed files/risks, conventional commit or PR title. If diffs are broad/unclear, preserve branch and stop; recover by cherry-picking verified files into a clean branch.
