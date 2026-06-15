@@ -1,11 +1,12 @@
 # Changelog
 
-## [2.0.6] - 2026-05-04
+## [2.0.7] - 2026-06-14
 
-### Governance
-* **Dirty Worktree SOP:** Added mandatory preflight, unattended-agent isolation, merge gate, and recovery rules to `AGENTS.md`.
-
-## [Unreleased] - 2026-06-13
+### Skills
+* **DevOps Guide — Two-Layer Split:** Restructured `SKILL_DevOps_Guide.md` into **Section 1 (General Install Rules, always apply)** and **Section 2 (Worked Examples, initial setup only)**. Clarifies that the guide is a general install ruleset; named software is illustrative, not scope.
+  * Stated universal rules once: npx-for-Node-CLIs, user-space installs, default caches, `_bin` scope, reusable alias pattern, verify-after-install, prerequisites-first.
+  * Removed framing that implied rules were tool-specific (e.g. "npx pattern" repeated per-tool, "Why User Installer?" buried under VS Code, cache location under Gemini, closed-roster decision tree/checklist).
+  * Added `opencode` (`npx --yes opencode-ai`) to the alias examples.
 
 ### Governance
 * **Compact Constitution:** Compressed `promptkit/AGENTS.md` around KISS, Rule of One, VCR, VSA, Q2 priorities, RepoReady, and current tool targets.
@@ -14,6 +15,11 @@
 
 ### Sync
 * **Generated Agent Files:** Synced generated agent targets from `promptkit/AGENTS.md`.
+
+## [2.0.6] - 2026-05-04
+
+### Governance
+* **Dirty Worktree SOP:** Added mandatory preflight, unattended-agent isolation, merge gate, and recovery rules to `AGENTS.md`.
 
 ## [2.0.5] - 2026-03-28
 

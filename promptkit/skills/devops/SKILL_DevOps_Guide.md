@@ -1,34 +1,77 @@
-# AI Development Tools Installation Guide
+# DevOps Guide — Install Ruleset
 **Windows 11 — Following DevOps Guide v2.0.2**
 
-**Date:** October 13, 2025
-**Guide Version:** 1.0.0
+**Guide Version:** 2.0.0
 **Prerequisites:** DevOps Guide v2.0.2 environment must be installed
 
----
-
-## Table of Contents
-
-1. [Prerequisites Verification](#prerequisites-verification)
-2. [VS Code Installation](#vs-code-installation)
-3. [Claude Desktop Installation](#claude-desktop-installation)
-4. [Docker MCP Toolkit Setup](#docker-mcp-toolkit-setup)
-5. [Gemini CLI Setup](#gemini-cli-setup)
-6. [GenKit Setup](#genkit-setup)
-7. [Jules Tools Setup](#jules-tools-setup)
-8. [PowerShell Aliases Configuration](#powershell-aliases-configuration)
-9. [Complete Verification](#complete-verification)
+> **How to read this document.**
+> **Section 1 (General Install Rules)** is the authoritative ruleset and applies to **every** install — present and future.
+> **Section 2 (Worked Examples)** is initial-setup scaffolding that *demonstrates* the rules on specific software. The named tools (VS Code, Gemini CLI, Jules, etc.) are **examples only, not a required or exhaustive roster**. When installing anything new, apply Section 1; reach for Section 2 only as a pattern reference.
 
 ---
 
-## Prerequisites Verification
+# Section 1 — General Install Rules (always apply)
 
-Before installing AI tools, verify your DevOps Guide v2.0.2 environment is ready.
+These rules govern all installs regardless of the software involved.
 
-### Run Environment Check
+### Core Principles
+- **Rule of One:** Each tool solves ONE problem with no overlap.
+- **VCR (Value-Complexity Ratio):** High value, minimal complexity.
+- **KISS:** The simplest solution is the default.
+- **Zero Global Installs:** No `npm install -g`. No machine-wide mutation when a user-space option exists.
 
-Open PowerShell and run:
+### Rule 1 — Node.js CLI tools run via `npx` (no global install)
+Any Node.js command-line tool is run on-demand with `npx`; it is **never** installed globally. The package is downloaded once and cached automatically.
 
+```powershell
+# Canonical pattern — substitute any Node CLI package
+npx --yes <package> [args]
+```
+
+- First run downloads + caches (30–60s). Subsequent runs are instant.
+- No version drift, no global `node_modules`, nothing to uninstall.
+
+### Rule 2 — Desktop apps and native binaries install to user space
+GUI apps and standalone binaries install **per-user**, never machine-wide:
+- Prefer a **user installer** (e.g. `winget` user scope) or a vendor installer that targets `%LOCALAPPDATA%`.
+- No admin elevation. Auto-updates without admin. Cleaner PATH management.
+- **Default location:** `%LOCALAPPDATA%\Programs\<App>` (or the vendor's user-space dir, e.g. `~\.<tool>\bin`).
+
+### Rule 3 — Use default cache locations
+Let package managers use their default caches; do not relocate them without cause.
+- npx / npm cache: `%LOCALAPPDATA%\npm-cache`
+- This rule is universal — it is **not** specific to any one tool.
+
+### Rule 4 — `_bin` is for executables, not packages
+`C:\Dev\_bin\` holds custom executables and compiled binaries (`.exe`, `.bat`, `.ps1`) — **never** Node.js packages. Node CLIs use Rule 1 (npx).
+
+### Rule 5 — Optional alias wrappers (reusable pattern)
+To drop the `npx` prefix, wrap any Node CLI in a PowerShell function in `$PROFILE`. This is a **pattern**, not a fixed list — add an entry for each tool you actually use:
+
+```powershell
+# General alias pattern — one line per Node CLI you use
+function <name> { npx --yes <package> $args }
+```
+
+Reload after editing: `. $PROFILE`
+
+### Rule 6 — Verify after every install
+Every install ends with a verification step (`--version`, a smoke command, or launching the app). An install is not "done" until verified.
+
+### Rule 7 — Check prerequisites first
+Before installing anything, confirm the base environment is present (see checklist below). If a prerequisite is missing, resolve it before proceeding.
+
+### Package Management Responsibilities
+Each tool owns ONE job — no overlap:
+
+| Tool | Purpose | Use When |
+|---|---|---|
+| **mise** | Runtime version management | Need different Node/Python versions per project |
+| **uv** | Python package management | Installing Python packages |
+| **pnpm** | Node.js project dependencies | Adding packages to a project |
+| **npx** | Ephemeral CLI execution | Running a Node CLI tool (Rule 1) |
+
+### Prerequisites Verification
 ```powershell
 Write-Host "`n=== DevOps Environment Check ===" -ForegroundColor Cyan
 Write-Host "uv: $(uv --version)" -ForegroundColor Green
@@ -38,529 +81,82 @@ Write-Host "npm: $(npm --version)" -ForegroundColor Green
 Write-Host "pnpm: $(pnpm --version)" -ForegroundColor Green
 Write-Host "git: $(git --version)" -ForegroundColor Green
 Write-Host "docker: $(docker --version)" -ForegroundColor Green
-```
 
-**Expected Output:**
-
-```
-=== DevOps Environment Check ===
-uv: uv 0.9.2 (141369ce7 2025-10-10)
-mise: 2025.10.7 windows-x64 (2025-10-10)
-node: v22.20.0
-npm: 10.9.3
-pnpm: 10.18.2
-git: git version 2.51.0.windows.2
-docker: Docker version XX.XX.X, build XXXXXXX
-```
-
-### Verify Directory Structure
-
-```powershell
+# Directory structure
 Test-Path C:\Dev\projects
 Test-Path C:\Dev\_bin
 Test-Path C:\Dev\_templates
 ```
 
-All should return `True`.
-
-**If any checks fail, complete DevOps Guide v2.0.2 setup before proceeding.**
+All checks should succeed before any install. If any fail, complete DevOps Guide v2.0.2 setup first.
 
 ---
 
-## VS Code Installation
+# Section 2 — Worked Examples (initial setup only)
 
-### What It Is
+> **These are examples that demonstrate Section 1 — not a required or exhaustive list.** They reflect the initial-setup roster; treat them as patterns to copy when installing comparable software.
 
-Visual Studio Code — Modern code editor with AI assistant integration capabilities.
+## Example: Node CLI via npx (Rule 1) — Gemini CLI / Jules / GenKit
 
-### Installation Method: Winget (Recommended)
+All three are Node CLI tools, so all three follow Rule 1 identically — there is nothing tool-specific about the pattern:
 
 ```powershell
-# Install VS Code User Installer (auto-updates without admin)
+# No install. Run on-demand; cached automatically.
+npx @google/gemini-cli --version      # interactive Gemini assistant
+npx @google/jules --version           # async coding agent (auth via Google + GitHub)
+npx genkit --version                  # AI app framework CLI
+```
+
+Authentication, where required, happens on first interactive run (browser flow). Project dependencies (e.g. `genkit`, `@genkit-ai/google-genai`) are added per-project with `pnpm add`, not globally.
+
+**Alias examples (Rule 5)** — add to `$PROFILE` only for tools you use:
+```powershell
+function gemini   { npx --yes @google/gemini-cli $args }
+function jules    { npx --yes @google/jules $args }
+function genkit   { npx --yes genkit $args }
+function opencode { npx --yes opencode-ai $args }
+```
+
+## Example: Desktop app via user installer (Rule 2) — VS Code
+
+```powershell
+# winget user scope — no admin, auto-updates
 winget install Microsoft.VisualStudioCode
-
-# Verify installation
 code --version
-where code
+where.exe code      # resolves under %LOCALAPPDATA%\Programs\Microsoft VS Code\bin
 ```
 
-**Expected Output:**
+Installs to `%LOCALAPPDATA%\Programs\Microsoft VS Code` per Rule 2. Extensions are installed with `code --install-extension <id>` as needed.
 
-```
-1.XX.X
-<commit hash>
-x64
-C:\Users\jerem\AppData\Local\Programs\Microsoft VS Code\bin\code
-```
+## Example: Desktop app via vendor installer (Rule 2) — Claude Desktop
 
-### Why User Installer?
+Download the Windows `.exe` from https://claude.ai/download and run it; it installs to `%LOCALAPPDATA%\Programs\Claude` (user space, Rule 2). Per-user config lives at `%APPDATA%\Claude\claude_desktop_config.json`.
 
-- Auto-updates without admin privileges
-- Cleaner PATH management
-- Follows DevOps Guide principle (tools in user space)
+## Example: Infrastructure feature toggle — Docker MCP Toolkit
 
-**Installation Location:** `%LOCALAPPDATA%\Programs\Microsoft VS Code`
-
-### Essential Extensions
-
-```powershell
-# Python development
-code --install-extension ms-python.python
-
-# GitHub Copilot (requires subscription)
-code --install-extension GitHub.copilot
-
-# WSL integration
-code --install-extension ms-vscode-remote.remote-wsl
-
-# Docker support
-code --install-extension ms-azuretools.vscode-docker
-```
-
-### Verification
-
-```powershell
-cd C:\Dev\projects
-mkdir vscode-test
-cd vscode-test
-code .
-```
-
-VS Code should open in your test directory.
+Some capabilities are feature toggles rather than installs. Docker Desktop → Settings → Beta features → enable **Docker MCP Toolkit** → Apply & Restart. Connect a client with `docker mcp client connect <client> --global` and manage servers with `docker mcp server add|list`.
 
 ---
 
-## Claude Desktop Installation
+## Verification (example checklist)
 
-### What It Is
-
-Desktop application for Claude AI — connects to MCP servers for enhanced capabilities.
-
-### Download and Install
-
-1. Visit: https://claude.ai/download
-2. Click "Windows" button, download the `.exe` installer
-3. Run the installer, follow wizard (default settings)
-4. Launch Claude Desktop when complete
-
-**Installation Location:** `%LOCALAPPDATA%\Programs\Claude`
-
-### Configuration Directory Setup
+> Adjust to whatever you actually installed — this is illustrative, not a definition of "complete."
 
 ```powershell
-# Create config directory if it doesn't exist
-New-Item -ItemType Directory -Path "$env:APPDATA\Claude" -Force
-
-# Verify creation
-Test-Path "$env:APPDATA\Claude"
+Write-Host "`n=== Install Verification (example) ===" -ForegroundColor Cyan
+# Node CLIs (Rule 1) — only check the ones you use
+try { Write-Host "Gemini: $(npx --yes @google/gemini-cli --version 2>&1)" } catch {}
+# Desktop apps (Rule 2)
+try { Write-Host "VS Code: $(code --version | Select-Object -First 1)" } catch {}
 ```
 
-**Expected Output:** `True`
+## Troubleshooting (general)
 
-**Config File Location:** `%APPDATA%\Claude\claude_desktop_config.json`
-
-*Note: Configure MCP servers after Docker MCP Toolkit setup.*
-
-### Verification
-
-1. Launch Claude Desktop from Start Menu
-2. Sign in with your Anthropic account
-3. Verify Claude responds to: "Hello, Claude!"
+- **A `code`/CLI command isn't found:** the user-space `bin` dir isn't on PATH. Add it (e.g. `$env:PATH = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin;$env:PATH"`) and re-test.
+- **npx is slow on first run:** expected — Rule 1 caches on first use; later runs are instant.
+- **Auth/browser flow fails:** disable VPN split-tunneling, try another browser, confirm a personal (not workspace) account.
+- **A tool needs admin:** stop — it violates Rule 2. Find the user-scope installer or a portable/`npx` equivalent.
 
 ---
 
-## Docker MCP Toolkit Setup
-
-### What It Is
-
-Docker Desktop feature that manages MCP servers in containers — provides secure, isolated tool execution for AI assistants.
-
-### Prerequisites Check
-
-```powershell
-docker --version
-docker ps
-```
-
-**Expected:** Docker version displays, `docker ps` shows running containers (or empty table).
-
-### Enable MCP Toolkit
-
-1. Open Docker Desktop
-2. Settings (gear icon) → Beta features
-3. Find "Enable Docker MCP Toolkit" → Toggle ON
-4. Click "Apply & Restart"
-5. Wait 30–60 seconds for restart
-
-### Verify MCP Toolkit
-
-After restart, look for "MCP Toolkit" tab in Docker Desktop left sidebar. You should see tabs: **Catalog**, **Servers**, **Clients**, **OAuth**.
-
-### Connect Claude Desktop to Docker MCP Toolkit
-
-```powershell
-# Connect Claude Desktop as an MCP client
-docker mcp client connect claude-desktop --global
-
-# Verify connection was created
-Get-Content "$env:APPDATA\Claude\claude_desktop_config.json"
-```
-
-**Expected Output:**
-
-```json
-{
-  "mcpServers": {
-    "docker-mcp-gateway": {
-      "command": "docker",
-      "args": ["mcp", "gateway", "run"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Install Example MCP Servers
-
-**Via Docker Desktop UI:**
-
-1. Docker Desktop → MCP Toolkit → Catalog tab
-2. Search for "GitHub Official" → Click `+`
-3. Configuration tab → Select "OAuth" → Click "Authorize"
-4. Repeat for other servers (Playwright, Filesystem, etc.)
-
-**Via CLI:**
-
-```powershell
-docker mcp catalog list
-docker mcp server add github-official
-docker mcp server list
-```
-
-### Test MCP Connection
-
-1. Fully quit Claude Desktop (right-click taskbar icon → Quit)
-2. Restart Claude Desktop
-3. Look for hammer icon (🔨) in bottom-left of chat input
-4. Click hammer icon → should show installed servers
-
----
-
-## Gemini CLI Setup
-
-### What It Is
-
-Google's AI assistant for terminal — fast, interactive access to Gemini models from the command line.
-
-### Installation Pattern: npx (Per DevOps Guide v2.0.2)
-
-**No installation required.** Gemini CLI uses the npx pattern — runs on-demand, cached automatically.
-
-### First Use
-
-```powershell
-# First run — downloads and caches the tool
-npx @google/gemini-cli --version
-```
-
-Type `y` when prompted to install.
-
-### Authentication Setup
-
-```powershell
-npx @google/gemini-cli
-```
-
-1. Select your preferred theme
-2. Select "Login with Google" (free tier)
-   - Gemini 2.5 Pro (1M token context)
-   - 60 requests/minute, 1000 requests/day
-3. Browser opens — sign in with personal Google account, grant permissions
-
-### Test Commands
-
-```powershell
-cd C:\Dev\projects
-npx @google/gemini-cli "What is the KISS principle in software development?"
-npx @google/gemini-cli --help
-```
-
-### Cache Location
-
-Automatically managed at: `%LOCALAPPDATA%\npm-cache`
-
----
-
-## GenKit Setup
-
-### What It Is
-
-Google's open-source framework for building AI-powered applications — provides flows, prompts, and production monitoring.
-
-### Installation Pattern: npx (Per DevOps Guide v2.0.2)
-
-No global installation required. GenKit uses the npx pattern for CLI; project dependencies via pnpm.
-
-### API Key Setup (One-Time)
-
-Get your Gemini API key from: https://aistudio.google.com/app/apikey
-
-```powershell
-# Set for current session
-$env:GEMINI_API_KEY = "your-api-key-here"
-
-# Make permanent (User level)
-[Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your-api-key-here', 'User')
-
-# Verify
-echo $env:GEMINI_API_KEY
-```
-
-### Create Test Project
-
-```powershell
-cd C:\Dev\projects
-mkdir genkit-test && cd genkit-test
-pnpm init
-pnpm add genkit @genkit-ai/google-genai
-New-Item -ItemType File -Path server.js
-```
-
-**server.js:**
-
-```js
-const { genkit } = require('genkit');
-const { googleAI, gemini20Flash } = require('@genkit-ai/google-genai');
-
-const ai = genkit({ plugins: [googleAI()], model: gemini20Flash });
-
-const greetFlow = ai.defineFlow(
-  { name: 'greetFlow', inputSchema: { name: String }, outputSchema: String },
-  async (input) => {
-    const { text } = await ai.generate(`Say hello to ${input.name} in a creative way!`);
-    return text;
-  }
-);
-
-module.exports = { greetFlow };
-```
-
-### Test GenKit
-
-```powershell
-npx genkit start -- node server.js
-```
-
-Open browser to: http://localhost:4000 — click "greetFlow", run with `{ "name": "Jeremie" }`.
-
-Press `Ctrl+C` to stop.
-
----
-
-## Jules Tools Setup
-
-### What It Is
-
-Google's asynchronous coding agent CLI — delegates complex, multi-step coding tasks that run in cloud VMs.
-
-### Installation Pattern: npx (Per DevOps Guide v2.0.2)
-
-No installation required.
-
-### First Use and Authentication
-
-```powershell
-npx @google/jules --version
-```
-
-Type `y` when prompted. Browser opens for Google + GitHub authentication.
-
-### Test Commands
-
-```powershell
-npx @google/jules auth status
-npx @google/jules --help
-
-cd C:\Dev\projects
-mkdir jules-test && cd jules-test
-git init
-npx @google/jules remote list --repo .
-```
-
-### Gemini CLI vs Jules Tools
-
-| | Gemini CLI | Jules Tools |
-|---|---|---|
-| **Speed** | Real-time, interactive | Asynchronous, background |
-| **Use for** | Quick questions, code review | Complex refactors, multi-step tasks |
-| **Output** | Chat response | Pull Request |
-
----
-
-## PowerShell Aliases Configuration
-
-### Setup Instructions
-
-**1. Open PowerShell Profile:**
-
-```powershell
-notepad $PROFILE
-```
-
-**2. Add Aliases (at end of file, after existing PATH config):**
-
-```powershell
-# CLI Tool Aliases (optional but recommended)
-function gemini { npx --yes @google/gemini-cli $args }
-function jules  { npx --yes @google/jules $args }
-function genkit { npx --yes genkit $args }
-```
-
-**3. Reload Profile:**
-
-```powershell
-. $PROFILE
-```
-
-### Your Complete PowerShell Profile
-
-```powershell
-# Add mise shims to PATH
-$env:PATH = "$env:LOCALAPPDATA\mise\shims;$env:PATH"
-
-# Add Node.js bin directory to PATH
-$nodePath = "$env:LOCALAPPDATA\mise\installs\node\22.20.0"
-$env:PATH = "$nodePath;$env:PATH"
-
-# CLI Tool Aliases (optional but recommended)
-function gemini { npx --yes @google/gemini-cli $args }
-function jules  { npx --yes @google/jules $args }
-function genkit { npx --yes genkit $args }
-```
-
----
-
-## Complete Verification
-
-### Full Environment Check
-
-```powershell
-Write-Host "`n=== Complete AI Tools Verification ===" -ForegroundColor Cyan
-
-Write-Host "`nDesktop Applications:" -ForegroundColor Yellow
-Write-Host "VS Code: $(code --version | Select-Object -First 1)" -ForegroundColor Green
-Write-Host "Docker Desktop: $(docker --version)" -ForegroundColor Green
-
-Write-Host "`nCLI Tools (via npx):" -ForegroundColor Yellow
-try { Write-Host "Gemini CLI: $(gemini --version 2>&1)" -ForegroundColor Green }
-catch { Write-Host "Gemini CLI: Use 'npx @google/gemini-cli' or configure aliases" -ForegroundColor Yellow }
-
-try { Write-Host "Jules Tools: $(jules --version 2>&1)" -ForegroundColor Green }
-catch { Write-Host "Jules Tools: Use 'npx @google/jules' or configure aliases" -ForegroundColor Yellow }
-
-try { Write-Host "GenKit: $(genkit --version 2>&1)" -ForegroundColor Green }
-catch { Write-Host "GenKit: Use 'npx genkit' or configure aliases" -ForegroundColor Yellow }
-
-Write-Host "`nDocker MCP Toolkit:" -ForegroundColor Yellow
-docker mcp catalog list | Select-Object -First 3
-```
-
-### Manual Verification Checklist
-
-- [ ] VS Code launches successfully
-- [ ] Claude Desktop responds to chat messages
-- [ ] Claude Desktop shows hammer icon (🔨) after connecting to Docker MCP
-- [ ] Docker Desktop shows "MCP Toolkit" tab
-- [ ] Gemini CLI responds to prompts
-- [ ] Jules Tools authenticates with GitHub
-- [ ] GenKit Developer UI launches at localhost:4000
-- [ ] PowerShell aliases work (if configured)
-
----
-
-## Troubleshooting
-
-### VS Code: Command Not Found
-
-```powershell
-$vscodePath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin"
-$env:PATH = "$vscodePath;$env:PATH"
-code --version
-```
-
-### Claude Desktop: No Hammer Icon
-
-```powershell
-Get-Content "$env:APPDATA\Claude\claude_desktop_config.json"
-# Fully quit Claude Desktop (right-click taskbar → Quit), then restart
-```
-
-### Gemini CLI: Authentication Failed
-
-1. Disable VPN split-tunneling (use global mode)
-2. Try different browser
-3. Clear browser cache and retry
-4. Verify personal Google account (not workspace)
-
-### Jules Tools: GitHub Authorization Failed
-
-```powershell
-gh auth status
-gh auth login        # re-authenticate if needed
-npx @google/jules auth status
-```
-
-### GenKit: API Key Not Found
-
-```powershell
-echo $env:GEMINI_API_KEY
-[Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your-api-key', 'User')
-# Restart PowerShell and test
-```
-
-### Docker MCP Toolkit: Not Visible
-
-1. Verify Docker Desktop version: Must be 4.42.0+
-2. Settings → Beta features → Enable "Docker MCP Toolkit"
-3. Apply & Restart, wait 1–2 minutes
-
-### npx Commands Slow on First Run
-
-**This is expected.** First run downloads and caches the package (30–60 seconds). Subsequent runs are instant.
-
----
-
-## Tool Selection Decision Tree
-
-```
-Need an answer RIGHT NOW?
-  → Gemini CLI (instant response)
-
-Need to delegate a multi-step coding task?
-  → Jules Tools (async, creates PR)
-
-Need to build AI features INTO your app?
-  → GenKit (framework for AI apps)
-
-Need AI to access local files/GitHub/databases?
-  → Claude Desktop + Docker MCP Toolkit
-
-Need to write code yourself with AI help?
-  → VS Code + GitHub Copilot
-```
-
----
-
-## Summary
-
-| Category | Tool | Status |
-|---|---|---|
-| Desktop | VS Code | winget install |
-| Desktop | Claude Desktop | .exe installer |
-| CLI | Gemini CLI | npx (no install) |
-| CLI | Jules Tools | npx (no install) |
-| CLI | GenKit | npx (no install) |
-| Infrastructure | Docker MCP Toolkit | Beta feature toggle |
-| Convenience | PowerShell aliases | Optional |
-
-**All following DevOps Guide principles: no global npm installs, npx pattern, KISS compliant.**
+**Everything above resolves to Section 1.** When in doubt, the rules win; the examples are only illustrations of them.
