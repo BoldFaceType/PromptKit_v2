@@ -1,8 +1,8 @@
 # DevOps Guide — Install Ruleset
-**Windows 11 — Following DevOps Guide v2.0.2**
+**Windows 11 — Following DevOps Guide v2.0.7**
 
-**Guide Version:** 2.0.0
-**Prerequisites:** DevOps Guide v2.0.2 environment must be installed
+**Guide Version:** 2.0.7
+**Prerequisites:** DevOps Guide v2.0.7 environment must be installed
 
 > **How to read this document.**
 > **Section 1 (General Install Rules)** is the authoritative ruleset and applies to **every** install — present and future.
@@ -88,7 +88,7 @@ Test-Path C:\Dev\_bin
 Test-Path C:\Dev\_templates
 ```
 
-All checks should succeed before any install. If any fail, complete DevOps Guide v2.0.2 setup first.
+All checks should succeed before any install. If any fail, complete DevOps Guide v2.0.7 setup first.
 
 ---
 

@@ -27,17 +27,14 @@ def profile_target(script_path):
     stats.strip_dirs()
     stats.sort_stats('cumulative')
 
-    print("
---- 📊 Top 5 Bottlenecks ---")
+    print("\n--- 📊 Top 5 Bottlenecks ---")
     stats.print_stats(5)
 
-    print("
---- 🐍 Launching SnakeViz ---")
+    print("\n--- 🐍 Launching SnakeViz ---")
     try:
         subprocess.run(["snakeviz", output_file])
     except KeyboardInterrupt:
-        print("
-✅ Done.")
+        print("\n✅ Done.")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
