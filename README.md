@@ -73,3 +73,4 @@ Versioning is managed via standard Git workflows and the **Session Shutdown Prot
 We do not optimize by adding code. We optimize by removing barriers.
 *   **Forbidden in Tier 1 Loops:** class, `__init__`, try/except, logging, I/O.
 *   **Mandatory:** Structure of Arrays (SoA).
+*   **Exception:** If a benchmark proves SoA runs slower than the OOP baseline for a given hot path, the SoA mandate is waived for that path — keep the faster implementation. Measured performance overrides the pattern.

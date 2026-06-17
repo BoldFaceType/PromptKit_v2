@@ -32,3 +32,6 @@ For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest
 
 ## 8. Dirty Worktree SOP
 Before unattended agents, branches/worktrees, or merge requests, run `git status --short`. If dirty: commit owned WIP to a temp branch, isolate user/unknown WIP, and remove generated noise only when safely reproducible. Unattended agents require a clean branch/worktree, one narrow task, expected test, and allowed file scope. Merge gate: status, checks run, changed files/risks, conventional commit or PR title. If diffs are broad/unclear, preserve branch and stop; recover by cherry-picking verified files into a clean branch.
+
+## 9. SoA Performance Exception
+Structure of Arrays (SoA) is mandatory in Tier 1 hot paths, but the mandate is data-driven, not dogmatic. If a benchmark proves SoA runs slower than the OOP baseline for a given hot path, waive the SoA mandate for that path and keep the faster implementation. Measured performance overrides the pattern.
