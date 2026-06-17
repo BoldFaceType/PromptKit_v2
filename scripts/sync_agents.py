@@ -10,7 +10,6 @@ Why Injection?
 - Forces the "Negative Space" rules into the immediate context window.
 """
 import os
-import shutil
 import sys
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -45,7 +44,7 @@ def sync():
 
     # 2. Read Constitution
     print(f"📖 Reading Constitution from {SOURCE}...")
-    with open(SOURCE, "r", encoding="utf-8") as f:
+    with open(SOURCE, encoding="utf-8") as f:
         constitution_content = f.read()
 
     # 3. Inject into Targets
