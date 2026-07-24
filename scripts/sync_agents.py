@@ -10,7 +10,11 @@ Why Injection?
 - Forces the "Negative Space" rules into the immediate context window.
 """
 import os
-import shutil
+import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
 
 # Configuration
 SOURCE = "promptkit/AGENTS.md"
@@ -20,7 +24,8 @@ TARGETS = [
     "AGENTS.md",                      # OpenCode (Project-specific SSoT)
     ".codex/config.toml",             # Codex CLI
     ".prompts/instructions.md",       # Theia AI
-    ".github/copilot-instructions.md" # GitHub CoPilot CLI
+    ".github/copilot-instructions.md", # GitHub CoPilot CLI
+    "~/.claude/CLAUDE.md",            # Claude Code global config
 ]
 
 HEADER = """<!--
@@ -39,26 +44,27 @@ def sync():
 
     # 2. Read Constitution
     print(f"📖 Reading Constitution from {SOURCE}...")
-    with open(SOURCE, "r", encoding="utf-8") as f:
+    with open(SOURCE, encoding="utf-8") as f:
         constitution_content = f.read()
 
     # 3. Inject into Targets
     for target in TARGETS:
-        target_dir = os.path.dirname(target)
+        target_path = os.path.expanduser(target)
+        target_dir = os.path.dirname(target_path)
 
-        # Ensure target dir exists (e.g., .gemini/)
+        # Ensure target dir exists (e.g., .gemini/, ~/.claude/)
         if target_dir and not os.path.exists(target_dir):
             os.makedirs(target_dir)
             print(f"📂 Created directory: {target_dir}")
 
         # Write Content
         try:
-            with open(target, "w", encoding="utf-8") as f:
+            with open(target_path, "w", encoding="utf-8") as f:
                 f.write(HEADER)
                 f.write(constitution_content)
-                print(f"✅ Injected -> {target}")
+                print(f"✅ Injected -> {target_path}")
         except Exception as e:
-            print(f"⚠️ Failed to write {target}: {e}")
+            print(f"⚠️ Failed to write {target_path}: {e}")
 
 if __name__ == "__main__":
     sync()

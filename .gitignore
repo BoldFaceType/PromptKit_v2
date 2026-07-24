@@ -30,4 +30,3 @@ venv.bak/
 .ruff_cache/
 .benchmarks/
 profile_results.prof
-.gemini/

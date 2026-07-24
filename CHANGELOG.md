@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.0.7] - 2026-06-14
+
+### Skills
+* **DevOps Guide — Two-Layer Split:** Restructured `SKILL_DevOps_Guide.md` into **Section 1 (General Install Rules, always apply)** and **Section 2 (Worked Examples, initial setup only)**. Clarifies that the guide is a general install ruleset; named software is illustrative, not scope.
+  * Stated universal rules once: npx-for-Node-CLIs, user-space installs, default caches, `_bin` scope, reusable alias pattern, verify-after-install, prerequisites-first.
+  * Removed framing that implied rules were tool-specific (e.g. "npx pattern" repeated per-tool, "Why User Installer?" buried under VS Code, cache location under Gemini, closed-roster decision tree/checklist).
+  * Added `opencode` (`npx --yes opencode-ai`) to the alias examples.
+
+### Governance
+* **Compact Constitution:** Compressed `promptkit/AGENTS.md` around KISS, Rule of One, VCR, VSA, Q2 priorities, RepoReady, and current tool targets.
+* **RepoReady:** Added Task Manifests and removed the broad `documented` requirement.
+* **Tool Focus:** Removed Gemini CLI and OpenWebUI from the Optimize For list.
+
+### Sync
+* **Generated Agent Files:** Synced generated agent targets from `promptkit/AGENTS.md`.
+
+## [2.0.6] - 2026-05-04
+
+### Governance
+* **Dirty Worktree SOP:** Added mandatory preflight, unattended-agent isolation, merge gate, and recovery rules to `AGENTS.md`.
+
+## [2.0.5] - 2026-03-28
+
+### Skills
+* **DevOps Guide:** Added `SKILL_DevOps_Guide.md` (AI Development Tools Installation Guide for Windows 11, following DevOps Guide v2.0.2).
+* **Reference Link:** Added lazy-load link in `AGENTS.md` Section 5.
+
+### Sync
+* **Global Claude Config:** Updated `sync_agents.py` to inject constitution into `~/.claude/CLAUDE.md` (Claude Code global context).
+
 ## [2.0.4] - 2026-02-05
 
 ### Session Shutdown
