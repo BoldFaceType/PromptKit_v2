@@ -18,6 +18,8 @@ Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, 
 * Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
 * DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
 
+- Before any software installation, read `C:\Dev\DevOps Guide v2.0.7.md` completely and follow Section 1.
+
 ## 6. Shutdown
 Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
 

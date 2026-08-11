@@ -12,9 +12,11 @@
 * **Compact Constitution:** Compressed `promptkit/AGENTS.md` around KISS, Rule of One, VCR, VSA, Q2 priorities, RepoReady, and current tool targets.
 * **RepoReady:** Added Task Manifests and removed the broad `documented` requirement.
 * **Tool Focus:** Removed Gemini CLI and OpenWebUI from the Optimize For list.
+* **Install Governance:** Required agents to read `C:\Dev\DevOps Guide v2.0.7.md` and follow Section 1 before installing software.
 
 ### Sync
 * **Generated Agent Files:** Synced generated agent targets from `promptkit/AGENTS.md`.
+* **Global Codex Config:** Added `~/.codex/AGENTS.md` to the generated instruction targets.
 
 ## [2.0.6] - 2026-05-04
 

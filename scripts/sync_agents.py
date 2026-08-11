@@ -25,6 +25,7 @@ TARGETS = [
     ".codex/config.toml",             # Codex CLI
     ".prompts/instructions.md",       # Theia AI
     ".github/copilot-instructions.md", # GitHub CoPilot CLI
+    "~/.codex/AGENTS.md",             # Codex global instructions
     "~/.claude/CLAUDE.md",            # Claude Code global config
 ]
 
