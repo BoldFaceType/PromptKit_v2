@@ -18,6 +18,8 @@ Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, 
 * Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
 * DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
 
+- Before any software installation, read `C:\Dev\DevOps Guide v2.0.7.md` completely and follow Section 1.
+
 ## 6. Shutdown
 Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
 
@@ -29,3 +31,6 @@ Before unattended agents, branches/worktrees, or merge requests, run `git status
 
 ## 9. SoA Performance Exception
 Structure of Arrays (SoA) is mandatory in Tier 1 hot paths, but the mandate is data-driven, not dogmatic. If a benchmark proves SoA runs slower than the OOP baseline for a given hot path, waive the SoA mandate for that path and keep the faster implementation. Measured performance overrides the pattern.
+
+## 10. GitHub Operations
+For any GitHub operation, always use the authenticated `gh` CLI first.
