@@ -13,6 +13,7 @@
 * **RepoReady:** Added Task Manifests and removed the broad `documented` requirement.
 * **Tool Focus:** Removed Gemini CLI and OpenWebUI from the Optimize For list.
 * **Install Governance:** Required agents to read `C:\Dev\DevOps Guide v2.0.7.md` and follow Section 1 before installing software.
+* **GitHub Operations:** Required agents to use the authenticated `gh` CLI first for every GitHub operation.
 
 ### Sync
 * **Generated Agent Files:** Synced generated agent targets from `promptkit/AGENTS.md`.
