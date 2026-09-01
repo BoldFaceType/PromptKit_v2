@@ -48,3 +48,29 @@
 1.  **Cancel/Transfer Still Broken:** Both remain broken on Windows/Git Bash pending upstream fixes (#525, #469/#514) — not patched locally since it's plugin-owned code that would be overwritten on update.
 2.  **Untrusted Project:** PromptKit_v2 is not yet a trusted project in `~/.codex/config.toml`, so project-local Codex hooks/exec policies stay disabled here.
 3.  **Guide/Shim Outside Git:** `C:\Dev\DevOps Guide v2.0.7.md` and the new `C:\Dev\_bin\codex` shim live outside any git repository — this session's edits there have no commit/diff history.
+
+---
+*Updated via Session Shutdown Protocol.*
+
+## Session Shutdown - 2026-09-01
+
+Five PRs merged (#3–#7). DevOps Guide v2.0.7 → v2.1.2; sync fan-out 7 → 12 targets.
+
+### Decisions Made
+1.  **DevOps Guide consolidated to a single SSoT.** Found the guide forked four ways on disk — and the copy the Constitution's own DevOps link pointed at was 3,407 bytes stale, missing Rule 1A and the Codex shim example entirely, so every agent following that link read a ruleset unaware of the only sanctioned Rule 1 exception. Canonical is now `promptkit/skills/devops/SKILL_DevOps_Guide.md`; strays became redirect stubs or generated copies. **Resolves last session's debt item #3** (guide now lives in git; the `_bin\codex` shim still does not).
+2.  **Fixed `.codex/config.toml` — silently invalid TOML since v2.0.5 (75e69dd).** `sync_agents.py` had been injecting an HTML comment header plus Markdown prose into a TOML file, so it failed to parse at line 1 for ~5 months. Removed from targets (Codex reads `AGENTS.md` for instructions anyway); added a `check_target()` guard that refuses any non-Markdown target, so this class of corruption can't recur silently.
+3.  **`sync_agents.py` generalized to multi-document.** Single `SOURCE`/`TARGETS` pair → a `DOCUMENTS` list of source→targets mappings, plus `--dry-run`, non-zero exit on failure, and `@args` forwarding in the `.ps1` wrapper (which had been silently ignoring `--dry-run` and doing real writes).
+4.  **Canonical sync targets set to Claude, Codex, OpenCode, Prime Agent.** Each wired to its own verified native global path (`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.prime/agent/AGENTS.md`), plus a tool-agnostic `~/AGENTS.md` home-root copy. All paths confirmed via Context7 + primary-source docs before adding — which is what caught OpenCode's move from `sst/opencode` to `anomalyco/opencode`.
+5.  **New Constitution Rule 11 — Documentation Verification.** Formalizes the discipline the above depended on: check Context7 against assumptions first, when available.
+6.  **Guide hardened with new rules.** Rule 8 (`uvx` for Python CLIs), Rule 9 (every install states its reversal), Rule 2 elevation exception, honest `npx` version-drift framing, `_bin` vs `_cache` boundary, and a verification block that can actually fail — the previous one printed green unconditionally, so a missing tool rendered as a pass.
+7.  **`marimo-team/skills` installed** to Claude Code, Codex, and OpenCode (10 skills). Codex pickup confirmed working by user at session end.
+8.  **Session gotchas recorded durably.** Five installer gotchas into the guide's Troubleshooting; four environment/workflow ones into `windows-agent-workflow-gotchas.md` memory — split by scope so the Install Ruleset stays about installs.
+
+### Technical Debt Added
+1.  **Marimo sync gap (deliberate).** Marimo's AI assistant has no AGENTS.md equivalent — instructions live in `marimo.toml`'s `[ai].rules` string, alongside real settings a blind overwrite would destroy. Syncing it needs a TOML-aware merge (`tomlkit`, not currently a dependency). Documented inline in `sync_agents.py`; not implemented.
+2.  **Gemini CLI gap (deliberate).** `~/.gemini/GEMINI.md` is Gemini's own auto-accumulated memory log (44 KB of real session history), not a static instructions file — excluded from sync so it isn't clobbered. Gemini only receives the Constitution at project level via `.gemini/GEMINI.md`.
+3.  **Data loss: `C:\Dev\notes\DevOps Guide v2.0.3.md`.** Overwritten in place with a redirect stub before checking its hard-link count; it shared an inode with a Claude Desktop upload cache file, so the original v2.0.3 content is gone from both names and is not recoverable. Superseded content, low consequence — but the cause is now Rule-documented under Troubleshooting.
+4.  **`~/.qwen/skills/` left empty.** Pre-existing directory (2026-07-04) that a botched skills install polluted; the 10 unwanted folders were removed surgically, leaving the directory itself empty rather than restored to a prior state.
+5.  **`~/.agents/.skill-lock.json` inconsistency (pre-existing).** Lists a `microsoft-foundry` skill that isn't present on disk. Not caused this session and not touched, since editing it risked the real `superpowers` entry alongside it.
+6.  **CRLF churn on every sync.** Each `sync_agents.py` run dirties five generated Constitution targets with CRLF-only diffs that carry no content change, adding noise to every commit. A `.gitattributes` `eol` rule would settle it.
+7.  **`_bin` hygiene not actioned.** Rule 4 now explicitly bans installers and partial downloads in `C:\Dev\_bin`, but the directory still holds ~1.6 GB of them plus one abandoned `.crdownload` — the rule was written, the cleanup wasn't done.
