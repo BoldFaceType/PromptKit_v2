@@ -34,6 +34,18 @@
 ---
 *Updated via Session Shutdown Protocol.*
 
+## Session Shutdown - 2026-06-27
+
+### Decisions Made
+1.  **Sync Script Verified:** Ran `scripts/sync_agents.py` twice; confirmed it correctly injects `promptkit/AGENTS.md` into all repo-local targets (no diffs, already in sync with HEAD).
+2.  **Global Target Confirmed Intentional:** Confirmed the `~/.claude/CLAUDE.md` target (added in `75e69dd`, v2.0.5) is a deliberate feature, not drift or injection — verified via `git log -p`.
+
+### Technical Debt Added
+1.  **Cross-Project Scope Risk:** `sync_agents.py` unconditionally overwrites the user's *global* `~/.claude/CLAUDE.md` with this repo's constitution. On a persistent (non-sandboxed) machine, this clobbers any global Claude Code instructions and leaks PromptKit_v2's rules into every other project's sessions. No backup/merge step exists before the overwrite. Consider gating the global write behind a flag or diffing before overwrite.
+
+---
+*Updated via Session Shutdown Protocol.*
+
 ## Session Shutdown - 2026-08-30
 
 ### Decisions Made
