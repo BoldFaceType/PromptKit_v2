@@ -37,6 +37,16 @@ DOCUMENTS = [
             ".github/copilot-instructions.md",  # GitHub CoPilot CLI
             "~/.codex/AGENTS.md",               # Codex global instructions
             "~/.claude/CLAUDE.md",              # Claude Code global config
+            "~/.config/opencode/AGENTS.md",     # OpenCode global instructions. OpenCode
+                                                 # already falls back to ~/.claude/CLAUDE.md
+                                                 # if this is absent, but that's OpenCode's
+                                                 # own undocumented-to-us implementation
+                                                 # detail -- kept explicit rather than
+                                                 # relying on a fallback chain we don't own.
+            "~/.prime/agent/AGENTS.md",         # Prime Agent (Prime Intellect) global
+                                                 # instructions -- single file, not a dir
+                                                 # scan; see DevOps Guide Rule 1A for the
+                                                 # WSL2 install path for this tool.
         ],
     },
     {
@@ -45,9 +55,13 @@ DOCUMENTS = [
         "targets": [
             os.path.join(DEV_ROOT, "SKILL_DevOps_Guide.md"),
             os.path.join(DEV_ROOT, "projects", "SKILL_DevOps_Guide.md"),
-            "~/AGENTS.md",  # Home-root, tool-agnostic copy. No tool auto-scans this
-                             # path today (there is no ratified global AGENTS.md
-                             # convention yet) -- this stakes a stable, literally-
+            "~/AGENTS.md",  # Home-root, tool-agnostic copy. AGENTS.md is now
+                             # stewarded by the Agentic AI Foundation (Linux
+                             # Foundation) as of 2026 -- but that's a governance
+                             # change, not a technical one: the spec still only
+                             # defines project-root + nested-monorepo discovery,
+                             # no global/user-home location. No tool auto-scans
+                             # this path today. This stakes a stable, literally-
                              # named claim for whichever tools adopt one next,
                              # and gives humans/scripts one unambiguous place to
                              # look regardless of which agent they're using.
@@ -61,6 +75,13 @@ DOCUMENTS = [
 # overwrite real session memory on every sync run. If Gemini needs the DevOps
 # Guide pointer, it has to go in via Gemini's own memory mechanism, not this
 # unconditional-overwrite script.
+#
+# NOT a target: marimo's AI assistant. It has no AGENTS.md-equivalent at all --
+# custom instructions live in marimo.toml's [ai].rules string (TOML, not
+# Markdown), alongside real settings (max_tokens, chat_model, ...) that a blind
+# overwrite would destroy. Would need a TOML-aware merge (e.g. via `tomlkit`,
+# not currently a dependency here) to do safely -- a different, bigger feature
+# than this script provides. Researched 2026-09-01, not implemented.
 
 HEADER = """<!--
 ⚠️ AUTO-GENERATED: DO NOT EDIT DIRECTLY

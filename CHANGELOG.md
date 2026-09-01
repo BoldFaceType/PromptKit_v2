@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.2] - 2026-09-01
+## [2.1.3] - 2026-09-01
 
 ### Governance
 * **New Rule 11 — Documentation Verification:** `promptkit/AGENTS.md` now instructs
@@ -9,6 +9,40 @@
   Marimo sync-target research (confirming exact paths via Context7 + primary docs
   rather than asserting from training data, which is exactly what caught the
   `sst/opencode` → `anomalyco/opencode` org move).
+
+## [2.1.2] - 2026-09-01
+
+### Sync
+* **Canonical sync targets now include OpenCode and Prime Agent.** Constitution
+  document gains two new global targets: `~/.config/opencode/AGENTS.md` and
+  `~/.prime/agent/AGENTS.md`. Both confirmed via Context7 + primary-source docs
+  before adding — OpenCode's own docs (`opencode.ai/docs/rules/`) and Prime
+  Agent's own repo (`github.com/PrimeIntellect-ai/prime-agent`) both explicitly
+  document these exact paths as their native global instruction file.
+* **`~/.config/opencode/AGENTS.md` pre-existing content replaced, not lost.** It
+  held a manually-copied fragment of the Context7 rule (identical to
+  `~/.claude/rules/context7.md`) — no unique content, since that source still
+  exists unchanged. OpenCode's *behavior* does change: it now gets the full
+  Constitution instead of just the Context7 instruction. Checked before writing,
+  per the standing practice from the `~/.gemini/GEMINI.md` incident.
+* **Noted, not implemented: OpenCode already had an undocumented-to-us fallback**
+  to `~/.claude/CLAUDE.md` when no OpenCode-specific AGENTS.md exists (per its own
+  source, `instruction-context.ts`). Added the explicit target anyway rather than
+  depend on another tool's internal fallback chain as our sync mechanism.
+* **Marimo researched, deliberately not added.** Its AI assistant has no
+  AGENTS.md-equivalent — custom instructions live in `marimo.toml`'s `[ai].rules`
+  string (TOML), alongside real settings a blind overwrite would destroy (same
+  failure class as the `.codex/config.toml` corruption this guide already fixed
+  once). Documented inline in `sync_agents.py`; would need a TOML-aware merge
+  (e.g. via `tomlkit`) to do safely — a different, bigger feature than this
+  script provides today.
+* **AGENTS.md governance update:** the spec is now stewarded by the Agentic AI
+  Foundation (AAIF) under the Linux Foundation as of 2026 (founding members
+  include Anthropic, OpenAI, Google, Microsoft, AWS). Comment in
+  `sync_agents.py` updated to reflect this — but the *technical* scope is
+  unchanged: still no ratified global/user-home file location in the spec
+  itself, project-root + nested-monorepo discovery only. The `~/AGENTS.md`
+  home-root target from 2.1.1 is unaffected either way.
 
 ## [2.1.1] - 2026-09-01
 
