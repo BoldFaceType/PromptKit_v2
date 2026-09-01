@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.1.1] - 2026-09-01
+
+### Sync
+* **New global target: `~/AGENTS.md`.** The DevOps Guide document now also fans out to
+  a home-root, tool-agnostic copy at `C:\Users\<you>\AGENTS.md` — literally named
+  `AGENTS.md`, not tucked inside a Claude- or Codex-specific config directory. No
+  coding-agent tool auto-scans a bare home-root `AGENTS.md` today (there is no
+  ratified global `AGENTS.md` convention — see [agentsmd/agents.md#91](https://github.com/agentsmd/agents.md/issues/91),
+  an open, unresolved proposal for `~/.config/agents/AGENTS.md`), so this is a
+  deliberate, stable claim for whichever tools adopt one next, not a claim of
+  guaranteed pickup today.
+* **`~/.gemini/GEMINI.md` deliberately excluded, not overlooked.** Unlike every other
+  global target, that path is Gemini CLI's own auto-accumulated memory log
+  (`## Gemini Added Memories`) — Gemini appends to it itself; it is not a static
+  instructions file. Adding it as a sync target would silently overwrite real session
+  memory (44 KB of it, present) on every run. If Gemini needs the DevOps Guide
+  pointer, it goes in through Gemini's own memory mechanism, not this script.
+* **Confirmed, not new:** `~/.codex/AGENTS.md` (Codex's own global instructions file)
+  already carried the install-governance pointer identically to `~/.claude/CLAUDE.md`
+  — both are Constitution sync targets since 2.1.0. The gap this release closes is
+  the DevOps Guide's own *content* reaching a tool-agnostic path directly, not a
+  missing pointer.
+
+### Skills
+* **DevOps Guide v2.1.1:** header callout updated to enumerate all three generated
+  copies (`C:\Dev\SKILL_DevOps_Guide.md`, `C:\Dev\projects\SKILL_DevOps_Guide.md`,
+  `~/AGENTS.md`), so the document's own self-description stays accurate.
+
 ## [2.1.0] - 2026-08-30
 
 ### Skills

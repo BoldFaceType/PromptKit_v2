@@ -45,9 +45,22 @@ DOCUMENTS = [
         "targets": [
             os.path.join(DEV_ROOT, "SKILL_DevOps_Guide.md"),
             os.path.join(DEV_ROOT, "projects", "SKILL_DevOps_Guide.md"),
+            "~/AGENTS.md",  # Home-root, tool-agnostic copy. No tool auto-scans this
+                             # path today (there is no ratified global AGENTS.md
+                             # convention yet) -- this stakes a stable, literally-
+                             # named claim for whichever tools adopt one next,
+                             # and gives humans/scripts one unambiguous place to
+                             # look regardless of which agent they're using.
         ],
     },
 ]
+
+# NOT a target: ~/.gemini/GEMINI.md. Unlike the files above, that path is Gemini
+# CLI's own auto-accumulated memory log ("## Gemini Added Memories"), not a static
+# instructions file -- Gemini appends to it itself. Injecting here would silently
+# overwrite real session memory on every sync run. If Gemini needs the DevOps
+# Guide pointer, it has to go in via Gemini's own memory mechanism, not this
+# unconditional-overwrite script.
 
 HEADER = """<!--
 ⚠️ AUTO-GENERATED: DO NOT EDIT DIRECTLY
