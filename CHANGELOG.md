@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.1.4] - 2026-09-01
+
+### Skills
+* **DevOps Guide v2.1.2 — new "Known gotchas" subsection under Troubleshooting.**
+  Records installer behavior that contradicted its own documentation, each entry
+  earned from real damage or a real near-miss:
+  * **A scoping flag can be silently overridden by an `--all`-style flag.** `npx skills
+    add -a claude-code -a codex -a opencode --all` ignored all three `-a` flags and
+    installed to 77 agents, creating ~55 unwanted directories. Removing `--all` made
+    `-a` work.
+  * **An installer's success report is not evidence.** The same CLI printed
+    `copy → Codex` while writing nothing to `~/.codex/skills/`. Rule 6 sharpened:
+    verify the destination on disk, never the summary.
+  * **Agent skill roots differ per tool**, and OpenCode reads three of them — so one
+    install can satisfy two tools, and assumptions cannot transfer between agents.
+    Paths verified 2026-09-01 against each tool's own docs.
+  * **On Windows/NTFS an in-place write propagates through hard links** — Claude
+    Desktop hard-links uploads into its session storage, so files can have invisible
+    twins. Check `stat -c %h` before overwriting a file you did not create.
+  * **Verify provenance per-item before bulk deletion, not by sample.** An audit of 51
+    "obviously new" directories found two pre-existing with real user data.
+  Placed under the existing `## Troubleshooting` rather than in a new parallel
+  section — Troubleshooting already serves this role (Rule of One).
+
 ## [2.1.3] - 2026-09-01
 
 ### Governance

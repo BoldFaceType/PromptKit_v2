@@ -1,7 +1,7 @@
 # DevOps Guide — Install Ruleset
 
-**Version:** 2.1.1
-**Supersedes:** 2.1.0
+**Version:** 2.1.2
+**Supersedes:** 2.1.1
 **Canonical path:** `promptkit/skills/devops/SKILL_DevOps_Guide.md` (PromptKit_v2)
 **Platform:** Windows 11 + Ubuntu WSL2
 **Applies to:** every software install on this machine, present and future
@@ -341,6 +341,39 @@ enable **Docker MCP Toolkit** → Apply & Restart. Connect a client with
   personal (not workspace) account.
 - **A tool needs admin:** check Rule 2's elevation exception. If it does not qualify, stop
   and find the user-scope, portable, or `npx`/`uvx` equivalent.
+
+### Known gotchas — installer behavior that contradicts its own docs
+
+Each of these cost real damage or a real near-miss. They are recorded because the tool's
+documentation and the tool's actual behavior disagreed.
+
+- **A "scope" flag can be silently overridden by a "select-everything" flag.** `npx skills
+  add ... -a claude-code -a codex -a opencode --all` ignored **all three** `-a` flags and
+  installed to every one of its 77 registered agents — creating ~55 unwanted directories
+  for tools not on this machine. Removing `--all` made `-a` work correctly.
+  **Rule: never combine a scoping flag with an `--all`-style flag.** Run the narrowest
+  form, and verify the target list in the output *before* trusting it.
+- **An installer's success report is not evidence.** That same CLI printed
+  `copy → Codex` while writing **nothing** to `~/.codex/skills/` — it had written only to
+  a shared store. This is Rule 6 in its sharpest form: **verify the destination on disk,
+  never the installer's summary.** `ls` the target path.
+- **Agent skill/instruction roots differ per tool, and some read several.** Verified
+  2026-09-01: Claude Code → `~/.claude/skills/`; Codex → `~/.codex/skills/` only
+  (`$CODEX_HOME/skills`; its `.agents/skills` lookup is *repository*-level, not global);
+  OpenCode → reads **three** global roots (`~/.config/opencode/skills/`, `~/.claude/skills/`,
+  `~/.agents/skills/`), so a single install can satisfy two tools at once. Confirm the
+  specific tool's own docs before installing — do not generalize from one agent to another.
+- **On Windows/NTFS, an in-place write propagates through hard links.** `cat > file`
+  (and any truncate-in-place write) rewrites the shared inode, so **every** name pointing
+  at that data changes — there is no "original" left. Claude Desktop hard-links uploaded
+  files into its own session storage, so an unremarkable file in a working folder can have
+  an invisible twin. **Before overwriting any file you did not create, check
+  `stat -c %h` — a link count above 1 means another path shares those exact bytes.**
+- **Before deleting in bulk, verify provenance per-item, not by sample.** A cleanup of
+  51 "obviously new" directories was audited item-by-item and two turned out to be
+  pre-existing with real user data. Gate every bulk delete on a per-item assertion
+  (creation date, expected contents) that *refuses* anything unexpected, rather than
+  trusting a spot-check of a few.
 
 ---
 
