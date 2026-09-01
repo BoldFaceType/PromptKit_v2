@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.3] - 2026-09-01
+
+### Governance
+* **New Rule 11 — Documentation Verification:** `promptkit/AGENTS.md` now instructs
+  always checking the Context7 tool against assumptions first, when available —
+  formalizing the discipline already applied throughout the OpenCode/Prime Agent/
+  Marimo sync-target research (confirming exact paths via Context7 + primary docs
+  rather than asserting from training data, which is exactly what caught the
+  `sst/opencode` → `anomalyco/opencode` org move).
+
 ## [2.1.2] - 2026-09-01
 
 ### Sync

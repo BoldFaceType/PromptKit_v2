@@ -42,3 +42,6 @@ Structure of Arrays (SoA) is mandatory in Tier 1 hot paths, but the mandate is d
 
 ## 10. GitHub Operations
 For any GitHub operation, always use the authenticated `gh` CLI first.
+
+## 11. Documentation Verification
+Always check the Context7 tool against assumptions first, when available.
