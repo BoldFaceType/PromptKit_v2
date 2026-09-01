@@ -34,6 +34,18 @@
 ---
 *Updated via Session Shutdown Protocol.*
 
+## Session Shutdown - 2026-06-27
+
+### Decisions Made
+1.  **Sync Script Verified:** Ran `scripts/sync_agents.py` twice; confirmed it correctly injects `promptkit/AGENTS.md` into all repo-local targets (no diffs, already in sync with HEAD).
+2.  **Global Target Confirmed Intentional:** Confirmed the `~/.claude/CLAUDE.md` target (added in `75e69dd`, v2.0.5) is a deliberate feature, not drift or injection — verified via `git log -p`.
+
+### Technical Debt Added
+1.  **Cross-Project Scope Risk:** `sync_agents.py` unconditionally overwrites the user's *global* `~/.claude/CLAUDE.md` with this repo's constitution. On a persistent (non-sandboxed) machine, this clobbers any global Claude Code instructions and leaks PromptKit_v2's rules into every other project's sessions. No backup/merge step exists before the overwrite. Consider gating the global write behind a flag or diffing before overwrite.
+
+---
+*Updated via Session Shutdown Protocol.*
+
 ## Session Shutdown - 2026-08-30
 
 ### Decisions Made
@@ -74,3 +86,4 @@ Five PRs merged (#3–#7). DevOps Guide v2.0.7 → v2.1.2; sync fan-out 7 → 12
 5.  **`~/.agents/.skill-lock.json` inconsistency (pre-existing).** Lists a `microsoft-foundry` skill that isn't present on disk. Not caused this session and not touched, since editing it risked the real `superpowers` entry alongside it.
 6.  **CRLF churn on every sync.** Each `sync_agents.py` run dirties five generated Constitution targets with CRLF-only diffs that carry no content change, adding noise to every commit. A `.gitattributes` `eol` rule would settle it.
 7.  **`_bin` hygiene not actioned.** Rule 4 now explicitly bans installers and partial downloads in `C:\Dev\_bin`, but the directory still holds ~1.6 GB of them plus one abandoned `.crdownload` — the rule was written, the cleanup wasn't done.
+8.  **Global-config overwrite risk (carried forward from 2026-06-27, now larger).** That session flagged `sync_agents.py` unconditionally overwriting the user's global `~/.claude/CLAUDE.md` with no backup or merge step. Still true, and the blast radius grew this session: the script now also overwrites `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.prime/agent/AGENTS.md`, and `~/AGENTS.md`. One of those (`~/.config/opencode/AGENTS.md`) did in fact replace pre-existing hand-written content this session. Mitigations exist but are partial — `--dry-run` shows what would change, and `check_target()` blocks non-Markdown targets — neither backs anything up. Gating global writes behind a flag, or diffing before overwrite, remains unimplemented.
