@@ -18,13 +18,15 @@ Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, 
 * Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
 * DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
 
-- Before any software installation, read `C:\Dev\DevOps Guide v2.0.7.md` completely and follow Section 1.
+- Before any software installation, read `C:\Dev\SKILL_DevOps_Guide.md` completely and follow Section 1.
 
 ## 6. Shutdown
 Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
 
 ## 7. Multi-Agent Board
 For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest_slices.md`. Lifecycle: claim, start, heartbeat, block, handoff, merge, release. Defaults: 15m lease, 5m heartbeat, stale after 10m. One owner per slice; earliest lease wins; stale leases need `takeover`; no lease means invalid work. Before merge, pass board validation, syntax, and formatting.
+
+Safe concurrency pattern: one task edits the main checkout, parallel implementation tasks use separate worktrees, and research/review tasks remain read-only.
 
 ## 8. Dirty Worktree SOP
 Before unattended agents, branches/worktrees, or merge requests, run `git status --short`. If dirty: commit owned WIP to a temp branch, isolate user/unknown WIP, and remove generated noise only when safely reproducible. Unattended agents require a clean branch/worktree, one narrow task, expected test, and allowed file scope. Merge gate: status, checks run, changed files/risks, conventional commit or PR title. If diffs are broad/unclear, preserve branch and stop; recover by cherry-picking verified files into a clean branch.

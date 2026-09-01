@@ -30,3 +30,21 @@
 1.  **Generated Diff Noise:** Sync updated multiple generated agent config files and produced CRLF-to-LF normalization warnings.
 2.  **Sync Script Drift:** `sync_agents.py` still targets `.gemini/GEMINI.md` even though Gemini CLI was removed from the Optimize For list.
 3.  **README Drift:** README still contains older positioning around Gemini/Cursor-era tooling and may need a compact refresh.
+
+---
+*Updated via Session Shutdown Protocol.*
+
+## Session Shutdown - 2026-08-30
+
+### Decisions Made
+1.  **Codex Plugin Installed:** Installed the OpenAI Codex Claude Code plugin (`openai/codex-plugin-cc`) via `/plugin marketplace add` → `/plugin install` → `/reload-plugins` → `/codex:setup`.
+2.  **Bash Shim, Not Global Install:** The plugin's setup script shells out to a literal `codex` binary and didn't see the existing `npx`-based `$PROFILE` alias. Fixed with a bash shim at `C:\Dev\_bin\codex` (`exec npx --yes @openai/codex "$@"`), preserving the DevOps Guide's Zero Global Installs rule instead of `npm install -g`.
+3.  **DevOps Guide Updated:** Documented the shim pattern in `DevOps Guide v2.0.7.md` as a new Section 2 worked example, plus a clarifying note in the Rule 1A exceptions section (the shim is Rule-1-compliant, not an exception — kept distinct from the Prime Agent/WSL2 exception).
+4.  **Full Command Verification:** Tested all 8 plugin commands (`setup`, `review`, `adversarial-review`, `status`, `result`, `cancel`, `transfer`, `rescue`) against real PromptKit_v2 working-tree state, read-only (no edits made to this repo).
+5.  **Upstream Bugs Confirmed, Not Duplicated:** Found two real Windows/Git-Bash bugs (`cancel`'s `taskkill /PID` mangled by MSYS path conversion; `transfer`'s no-arg transcript auto-detection, plus Claude Code's own permission classifier blocking the `--source` workaround). Both already deeply tracked upstream — added confirming-repro comments to existing issues ([#525](https://github.com/openai/codex-plugin-cc/issues/525), [#514](https://github.com/openai/codex-plugin-cc/issues/514)) instead of filing duplicates.
+6.  **Memory Saved:** Recorded the shim pattern, both bugs, and upstream links in `codex-plugin-setup.md` so future sessions don't rediscover them.
+
+### Technical Debt Added
+1.  **Cancel/Transfer Still Broken:** Both remain broken on Windows/Git Bash pending upstream fixes (#525, #469/#514) — not patched locally since it's plugin-owned code that would be overwritten on update.
+2.  **Untrusted Project:** PromptKit_v2 is not yet a trusted project in `~/.codex/config.toml`, so project-local Codex hooks/exec policies stay disabled here.
+3.  **Guide/Shim Outside Git:** `C:\Dev\DevOps Guide v2.0.7.md` and the new `C:\Dev\_bin\codex` shim live outside any git repository — this session's edits there have no commit/diff history.

@@ -1,42 +1,13 @@
-<!--
-⚠️ AUTO-GENERATED: DO NOT EDIT DIRECTLY
-SOURCE: promptkit/AGENTS.md
-SYNC COMMAND: python scripts/sync_agents.py
--->
-
-# AGENTS.md Compact Constitution
-
-## 1. Doctrine
-KISS, Rule of One, VCR, and smallest viable slices. Ship deterministic, reusable, continuous work. Reject scope creep, extra tools/frameworks, over-engineering, context bloat, token-maxxing, and AI hype. New tools need replacement-level justification. Compress complexity, challenge assumptions, limit WIP. Health, sleep, CPAP, finances, and family are first-class dependencies.
-
-## 2. 2026Q2 Priorities
-Stabilize finances, improve sleep, pass AI-103 by 2026-06-30, finish P520/3090, PAOS/Obsidian-Claude PKB, and Chill/Hybrid-Loop v2. Treat as one system for behavior change, local-first AI ops, and Applied/Clinical AI Engineering.
-
-## 3. RepoReady
-Repos are reproducible, versioned, dated, agent-compatible, and handoff-ready: README, CHANGELOG, PRD, TDD, ADRs, Task Manifests, install/run docs, VSA boundaries, branch rules, ASCII/ASIC flow diagrams.
-
-## 4. Optimize For
-Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, local inference, automation, APIs/CLIs, reusable infra, verification loops, learn-by-doing, long tasks, cron, AI-103 blocks.
-
-## 5. Reference Links
-* Active Project: [Chill Loop Canvas](...)
-* Profiling: [Manual](promptkit/skills/performance/SKILL_Profiling.md)
-* Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
-* DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
-
-- Before any software installation, read `C:\Dev\DevOps Guide v2.0.7.md` completely and follow Section 1.
-
-## 6. Shutdown
-Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
-
-## 7. Multi-Agent Board
-For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest_slices.md`. Lifecycle: claim, start, heartbeat, block, handoff, merge, release. Defaults: 15m lease, 5m heartbeat, stale after 10m. One owner per slice; earliest lease wins; stale leases need `takeover`; no lease means invalid work. Before merge, pass board validation, syntax, and formatting.
-
-## 8. Dirty Worktree SOP
-Before unattended agents, branches/worktrees, or merge requests, run `git status --short`. If dirty: commit owned WIP to a temp branch, isolate user/unknown WIP, and remove generated noise only when safely reproducible. Unattended agents require a clean branch/worktree, one narrow task, expected test, and allowed file scope. Merge gate: status, checks run, changed files/risks, conventional commit or PR title. If diffs are broad/unclear, preserve branch and stop; recover by cherry-picking verified files into a clean branch.
-
-## 9. SoA Performance Exception
-Structure of Arrays (SoA) is mandatory in Tier 1 hot paths, but the mandate is data-driven, not dogmatic. If a benchmark proves SoA runs slower than the OOP baseline for a given hot path, waive the SoA mandate for that path and keep the faster implementation. Measured performance overrides the pattern.
-
-## 10. GitHub Operations
-For any GitHub operation, always use the authenticated `gh` CLI first.
+# Codex CLI — project configuration
+#
+# Instructions are NOT injected into this file. Codex reads AGENTS.md at the repo
+# root, which scripts/sync_agents.py generates from promptkit/AGENTS.md. The
+# Constitution therefore still reaches Codex — via the file Codex actually reads
+# for instructions.
+#
+# This file is for Codex *settings* only and is no longer sync-managed.
+#
+# History: from v2.0.5 (75e69dd) through v2.0.7, sync_agents.py injected Markdown
+# here, leaving the file unparseable as TOML ("Invalid statement at line 1"). No
+# real settings were lost — the file had never held any. See CHANGELOG 2.1.0.
+# sync_agents.py now refuses non-Markdown targets outright.
