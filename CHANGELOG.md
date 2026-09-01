@@ -1,5 +1,59 @@
 # Changelog
 
+## [2.1.0] - 2026-08-30
+
+### Skills
+* **DevOps Guide — Consolidation + New Rules:** Merged the drifted working copy
+  (`C:\Dev\DevOps Guide v2.0.7.md`) back into the canonical repo path. The guide is now
+  fanned out by `scripts/sync_agents.py` instead of being hand-copied, so the four
+  divergent copies collapse to one source of truth.
+  * **Rule 1A (Prime Agent WSL2 exception)** and the **Codex bash-shim example** merged in
+    from the working copy — both had been absent from the canonical file since 2026-06-26,
+    meaning every agent following the Constitution's DevOps link read a ruleset unaware of
+    the only sanctioned Rule 1 exception.
+  * **New Rule 8 — Python CLIs via `uvx`:** the Rule 1 analogue for Python; `uv tool
+    install` limited to daily-driver tools.
+  * **New Rule 9 — Every install states its reversal:** reversal table per install method.
+    An install with no known reversal is not approved.
+  * **Rule 1 honesty fix:** removed the incorrect "no version drift" claim. Unpinned `npx`
+    floats to `latest`; added `@x.y.z` pinning guidance for load-bearing tools.
+  * **Rule 2 elevation exception:** narrow, three-condition escape hatch for software that
+    genuinely cannot install unelevated.
+  * **Rule 3:** cache table extended to pnpm, uv, and mise.
+  * **Rule 4:** explicit `_bin` (commands, on PATH) vs `_cache\installers` (install inputs)
+    boundary; partial downloads banned. Prompted by a 1,692 MB `_bin` holding ~1.6 GB of
+    installers and one abandoned `.crdownload`.
+  * **Rule 5:** documented the `$PROFILE`-function limitation that makes shims necessary.
+  * **Verification block rewritten:** real PASS/FAIL per check plus a failure summary. The
+    previous version applied `-ForegroundColor Green` unconditionally, so a missing tool
+    rendered as a pass. Added a Zero-Global-Installs assertion.
+
+### Sync
+* **`sync_agents.py` is now multi-document.** Replaced the single `SOURCE`/`TARGETS` pair
+  with a `DOCUMENTS` list of source→targets mappings. The DevOps Guide joins the
+  Constitution as a synced document, fanning out to `C:\Dev\SKILL_DevOps_Guide.md` and
+  `C:\Dev\projects\SKILL_DevOps_Guide.md`. Out-of-repo roots come from `$DEV_ROOT`
+  (default `C:\Dev`).
+* **Fixed: `.codex/config.toml` was silently invalid TOML from v2.0.5 (75e69dd) onward.**
+  The sync injected an HTML comment header and Markdown prose into a TOML file, so it
+  failed to parse at line 1. Removed from the target list — Codex reads `AGENTS.md` for
+  instructions, which is already synced, and `config.toml` is for settings. No settings
+  were lost; the file had never held any. It is now a valid comments-only TOML file.
+* **Guard added:** `sync_agents.py` refuses any non-Markdown target rather than emitting
+  a file the consuming tool cannot parse. This is the check that would have caught the
+  `.codex/config.toml` corruption at the point it was introduced.
+* **`--dry-run` flag** reports which targets would change without writing, and the script
+  now exits non-zero on failure.
+
+### Governance
+* **Single canonical copy:** `promptkit/skills/devops/SKILL_DevOps_Guide.md` declared
+  authoritative in the document header; the version-named `C:\Dev\DevOps Guide v2.0.7.md`
+  retired to a redirect stub, since a version in a filename defeats SSoT.
+* **Metadata block added:** version, supersedes, canonical path, owner, last-reviewed, and
+  a quarterly review cadence.
+* **Session metadata removed** from the normative ruleset; provenance lives here instead.
+  Codex shim added and verified 2026-08-30 (session `01ELekPFaiX4sHFcpitBTunW`).
+
 ## [2.0.7] - 2026-06-14
 
 ### Skills

@@ -24,6 +24,8 @@ Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions
 ## 7. Multi-Agent Board
 For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest_slices.md`. Lifecycle: claim, start, heartbeat, block, handoff, merge, release. Defaults: 15m lease, 5m heartbeat, stale after 10m. One owner per slice; earliest lease wins; stale leases need `takeover`; no lease means invalid work. Before merge, pass board validation, syntax, and formatting.
 
+Safe concurrency pattern: one task edits the main checkout, parallel implementation tasks use separate worktrees, and research/review tasks remain read-only.
+
 ## 8. Dirty Worktree SOP
 Before unattended agents, branches/worktrees, or merge requests, run `git status --short`. If dirty: commit owned WIP to a temp branch, isolate user/unknown WIP, and remove generated noise only when safely reproducible. Unattended agents require a clean branch/worktree, one narrow task, expected test, and allowed file scope. Merge gate: status, checks run, changed files/risks, conventional commit or PR title. If diffs are broad/unclear, preserve branch and stop; recover by cherry-picking verified files into a clean branch.
 
