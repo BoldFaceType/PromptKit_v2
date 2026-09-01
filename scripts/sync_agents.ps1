@@ -52,4 +52,4 @@ function Get-PreferredPython {
 }
 
 $python = Get-PreferredPython
-& $python (Join-Path $repoRoot 'scripts\sync_agents.py')
+& $python (Join-Path $repoRoot 'scripts\sync_agents.py') @args
