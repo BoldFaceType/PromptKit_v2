@@ -19,7 +19,7 @@ Repos are reproducible, versioned, dated, agent-compatible, and handoff-ready: R
 Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, local inference, automation, APIs/CLIs, reusable infra, verification loops, learn-by-doing, long tasks, cron, AI-103 blocks.
 
 ## 5. Reference Links
-* Active Project: [Chill Loop Canvas](...)
+* Session Log: [Decisions & Debt](SESSION_LOG.md)
 * Profiling: [Manual](promptkit/skills/performance/SKILL_Profiling.md)
 * Git Board: [Manual](promptkit/skills/governance/SKILL_GitBoard.md)
 * DevOps: [Guide](promptkit/skills/devops/SKILL_DevOps_Guide.md)
@@ -27,7 +27,7 @@ Marimo, Claude Code, Codex, LM Studio/Ollama, GitHub, Linear, Google Workspace, 
 - Before any software installation, read `C:\Dev\SKILL_DevOps_Guide.md` completely and follow Section 1.
 
 ## 6. Shutdown
-Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to Active Project; update CHANGELOG.md if code shipped; create conventional commit message.
+Trigger: "Done", "Wrap up", "Finish", or "Deploy". Before exit: append decisions/debt to SESSION_LOG.md; update CHANGELOG.md if code shipped; create conventional commit message.
 
 ## 7. Multi-Agent Board
 For multiple agents or branches/worktrees, use `AGENT_BOARD.jsonl` and `manifest_slices.md`. Lifecycle: claim, start, heartbeat, block, handoff, merge, release. Defaults: 15m lease, 5m heartbeat, stale after 10m. One owner per slice; earliest lease wins; stale leases need `takeover`; no lease means invalid work. Before merge, pass board validation, syntax, and formatting.
@@ -45,3 +45,6 @@ For any GitHub operation, always use the authenticated `gh` CLI first.
 
 ## 11. Documentation Verification
 Always check the Context7 tool against assumptions first, when available.
+
+## 12. Sub-Agents
+Use sub-agents where appropriate: parallelizable research, exploration, or independent implementation slices. Follow the §7 safe concurrency pattern — one task on the main checkout, parallel work in separate worktrees, research/review read-only.

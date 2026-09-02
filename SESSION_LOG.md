@@ -1,7 +1,9 @@
-# Chill Loop Canvas (Active Project)
+# Session Log
 
-## Project: PromptKit v2.0.2 Deployment
-**Status:** Completed (2026-02-05)
+Per-session decisions and technical debt (Shutdown Protocol, `AGENTS.md` §6).
+Distinct from `CHANGELOG.md`, which records shipped code only.
+
+## Session Shutdown - 2026-02-05 (PromptKit v2.0.2 Deployment)
 
 ### Decisions Made
 1.  **Deployment Path:** Isolated version 2.0.2 in `C:\Dev\projects\PromptKit_v2` to preserve version 0.1.0.

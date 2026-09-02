@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.1.5] - 2026-09-02
+
+### Governance
+* **`CHILL_LOOP_CANVAS.md` renamed to `SESSION_LOG.md`.** The Shutdown
+  Protocol's "Active Project" target had drifted into a pure decisions/debt
+  ledger for PromptKit tooling work — five sessions' worth (2026-02-05 through
+  2026-09-01), none of it actually about the Chill/Hybrid-Loop v2 project the
+  file was named for — making it both a misnomer and hard to find. `git mv`
+  preserves history; no redirect stub needed since the whole file body already
+  was the decisions/debt log. Constitution §5/§6 (`promptkit/AGENTS.md`)
+  repointed to `SESSION_LOG.md` and re-synced to all targets.
+* **New Rule 12 — Sub-Agents:** `promptkit/AGENTS.md` now directs using
+  sub-agents where appropriate for parallelizable research, exploration, or
+  independent implementation slices, following the existing §7 safe
+  concurrency pattern (main checkout for the primary task, worktrees for
+  parallel implementation, read-only for research/review).
+
 ## [2.1.4] - 2026-09-01
 
 ### Skills
