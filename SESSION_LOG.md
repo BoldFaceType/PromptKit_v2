@@ -89,3 +89,19 @@ Five PRs merged (#3–#7). DevOps Guide v2.0.7 → v2.1.2; sync fan-out 7 → 12
 6.  **CRLF churn on every sync.** Each `sync_agents.py` run dirties five generated Constitution targets with CRLF-only diffs that carry no content change, adding noise to every commit. A `.gitattributes` `eol` rule would settle it.
 7.  **`_bin` hygiene not actioned.** Rule 4 now explicitly bans installers and partial downloads in `C:\Dev\_bin`, but the directory still holds ~1.6 GB of them plus one abandoned `.crdownload` — the rule was written, the cleanup wasn't done.
 8.  **Global-config overwrite risk (carried forward from 2026-06-27, now larger).** That session flagged `sync_agents.py` unconditionally overwriting the user's global `~/.claude/CLAUDE.md` with no backup or merge step. Still true, and the blast radius grew this session: the script now also overwrites `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.prime/agent/AGENTS.md`, and `~/AGENTS.md`. One of those (`~/.config/opencode/AGENTS.md`) did in fact replace pre-existing hand-written content this session. Mitigations exist but are partial — `--dry-run` shows what would change, and `check_target()` blocks non-Markdown targets — neither backs anything up. Gating global writes behind a flag, or diffing before overwrite, remains unimplemented.
+
+---
+*Updated via Session Shutdown Protocol.*
+
+## Session Shutdown - 2026-09-02
+
+### Decisions Made
+1.  **Renamed `CHILL_LOOP_CANVAS.md` → `SESSION_LOG.md` via `git mv`.** Confirmed the file's entire body already was the decisions/debt ledger (no separate content to strip), so a straight rename beat the redirect-stub pattern used for the DevOps Guide strays — nothing else ever pointed at the old name for real content. Constitution §5/§6 (`promptkit/AGENTS.md`) repointed at `SESSION_LOG.md` and re-synced to all targets.
+2.  **Added Constitution §12 — Sub-Agents.** Directs using sub-agents for parallelizable research, exploration, or independent implementation slices, per the existing §7 safe concurrency pattern.
+3.  **Merged `claude/run-injectable-script-QpEck` straight to `main` via git, not a PR.** `gh auth status` confirmed `GH_TOKEN`/`GITHUB_TOKEN` are invalid for the GitHub API in this session (GraphQL and REST both refused with "GitHub access is not enabled for this session — an org admin must connect the Claude GitHub App"), while `git push` over HTTPS uses a separate, working credential path. Verified the branch was a clean fast-forward of `origin/main` (0 behind, 1 ahead) before merging, at explicit user request.
+4.  **Ran `make check` as a merge gate anyway.** It failed on 8 pre-existing `ruff` E501 errors in `scripts/sync_agents.py` — confirmed byte-identical to the copy already on `main` (untouched by this session's diff), so treated as pre-existing debt rather than a merge blocker.
+
+### Technical Debt Added
+1.  **No PR/CI trail for the `main` merge.** Repo convention is PR-based (per prior sessions' `quality_gate.yml`/`sync_constitution.yml` mentions), but this merge went straight to `main` with only local `make check` as a gate, since PR creation is blocked in this session. Should get a real PR (open/closed after the fact, or the next session's branch) if CI coverage on this diff matters.
+2.  **GitHub API non-functional this session (carried forward risk, now confirmed at the token level).** `gh auth status` reports the token invalid; every `gh`/REST/GraphQL call is refused regardless of read vs. write. Blocks PR creation, listing, and merging from any agent session until an org admin connects the Claude GitHub App. `git push`/`fetch` over HTTPS are unaffected (separate credential).
+3.  **`scripts/sync_agents.py` ruff debt untouched (8 × E501, line-too-long).** Pre-existing, not introduced this session, still failing `make check` on `main`.
